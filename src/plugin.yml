@@ -1,0 +1,16 @@
+## YAML Template.
+name: ConsoleTunnel
+version: 0.1c-1.5dev
+author: prosicraft
+main: com.prosicraft.consoletunnel.ConsoleTunnel
+
+commands:
+  ctunnel:
+    description: Creates a tunnel to a valid Command Console sender.
+    usage: /<command> <open|close|list> <playername|Console> [(flags)]
+    # alias won't be used if LazyRoad is installed
+    aliases: [tunnel]
+  rtunnel:
+    description: Equivalent to /ctunnel open/close <name> runas
+    usage: /<command> <playername|Console>
+    aliases: []
