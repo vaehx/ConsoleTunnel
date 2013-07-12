@@ -1,6 +1,6 @@
 ## YAML Template.
 name: ConsoleTunnel
-version: 0.1c-1.5dev
+version: 2013a-1.6.2-dev
 author: prosicraft
 main: com.prosicraft.consoletunnel.ConsoleTunnel
 
