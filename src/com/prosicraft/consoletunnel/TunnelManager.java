@@ -256,8 +256,7 @@ public class TunnelManager extends ArrayList<Tunnel>
 						}
 						else
 						{
-							MLog.w( "Can't load tunnel '" + s1 + "': destination not set or not found. Skipped." );
-							continue;
+							MLog.w( "Can't load tunnel '" + s1 + "': executor '" + execName + "' not set or not found. Will be set when player joins." );
 						}
 					}
 				}
@@ -269,7 +268,9 @@ public class TunnelManager extends ArrayList<Tunnel>
 				// ============= NOW INITIALIZE THE TUNNEL ============
 				Tunnel t = new Tunnel( plugin, id, open, useRunas );
 				t.executor = cs1;
+				t.executorName = execName;
 				t.target = cs2;
+				t.targetName = targetName;
 
 				this.add( t );
 				count++;

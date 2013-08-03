@@ -124,7 +124,10 @@ public class Tunnel
 		if( !open )
 			return MResult.RES_NOTINIT;
 
-		executor.sendMessage( ChatColor.DARK_GRAY + ( ( target.getName().equalsIgnoreCase( "console" ) ) ? "sys" : target.getName() ) + "# " + ChatColor.GRAY + s1 );
+		if( executor != null && target != null )
+		{
+			executor.sendMessage( ChatColor.DARK_GRAY + ( ( target.getName().equalsIgnoreCase( "console" ) ) ? "sys" : target.getName() ) + "# " + ChatColor.GRAY + s1 );
+		}
 		return MResult.RES_SUCCESS;
 	}
 
@@ -146,10 +149,22 @@ public class Tunnel
 		if( cmd.equals( "" ) )
 			return MResult.RES_NOTGIVEN;
 
-		if( !open || !isTargetSet() )
+		if( !open )
 			return MResult.RES_NOTINIT;
 
 		MLog.d( "Passed checks on dispatching command: '" + cmd + "'" );
+
+		if( executor == null )
+		{
+			MLog.e( "Phantom user tried '" + executorName + "' to dispatch command '" + cmd + "' for '" + targetName + "'!" );
+			return MResult.RES_NOACCESS;
+		}
+
+		if( target == null )
+		{
+			executor.sendMessage( ChatColor.YELLOW + "The target '" + targetName + "' is not reachable." );
+			return MResult.RES_SUCCESS;
+		}
 
 		try
 		{
