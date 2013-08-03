@@ -59,25 +59,22 @@ public class Tunnel
 		return target.getName().equalsIgnoreCase( username );
 	}
 
-	public MResult create( CommandSender dest, CommandSender target )
+	public MResult create( CommandSender executor, String executorName, CommandSender target, String targetName )
 	{
 		if( id == -1 )
 			return MResult.RES_NOTGIVEN;
-
-		if( open == true )
-			return MResult.RES_ALREADY;
 
 		// Add new tunnel to configuration
 		if( plugin != null )
 		{
 			MConfiguration config = plugin.getMConfiguration();
 			config.set( String.valueOf( id ) + ".open", true );
-			config.set( String.valueOf( id ) + ".executor", dest.getName() );
-			config.set( String.valueOf( id ) + ".target", target.getName() );
+			config.set( String.valueOf( id ) + ".executor", executorName );
+			config.set( String.valueOf( id ) + ".target", targetName );
 			config.set( String.valueOf( id ) + ".flags.runas", useRunas );
 			config.save();
 		}
-		this.executor = dest;
+		this.executor = executor;
 		this.target = target;
 		this.open = true;
 

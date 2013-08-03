@@ -61,11 +61,11 @@ public class ConsoleTunnel extends JavaPlugin
 
 		pdf = getDescription();
 
-		loadConfig( "config.yml" );
-
 		tm = new TunnelManager( this );
 		pl = new CTPlayerListener( tm, this );
 		sl = new CTServerListener( this );
+
+		loadConfig( "config.yml" );
 
 		getServer().getPluginManager().registerEvents( pl, this );
 		getServer().getPluginManager().registerEvents( sl, this );
@@ -82,7 +82,8 @@ public class ConsoleTunnel extends JavaPlugin
 
 		i( "Opening C2CStream Handler... (may cause exception since this is a dev build!)" );
 
-		( ( CraftServer ) getServer() ).getLogger().addHandler( new C2CHandler( tm ) );
+		c2chandler = new C2CHandler( tm );
+		( ( CraftServer ) getServer() ).getLogger().addHandler( c2chandler );
 
 		i( "Enabled Version " + pdf.getVersion() + " by " + pdf.getAuthors().get( 0 ) + "#b????" );
 	}
@@ -94,7 +95,10 @@ public class ConsoleTunnel extends JavaPlugin
 	@Override
 	public void onDisable()
 	{
-		config.save();
+		// Disable Handler
+		d( "Remove handler..." );
+		( ( CraftServer ) getServer() ).getLogger().removeHandler( c2chandler );
+
 		i( "Disabled." );
 	}
 
@@ -105,7 +109,6 @@ public class ConsoleTunnel extends JavaPlugin
 	 */
 	public void loadConfig( String configfilename )
 	{
-
 		if( !this.getDataFolder().exists() )
 		{
 			this.getDataFolder().mkdirs();
@@ -127,6 +130,8 @@ public class ConsoleTunnel extends JavaPlugin
 		config = new MConfiguration( YamlConfiguration.loadConfiguration( file ), file );
 		config.load();
 
+		// Load UID Counter
+		config.set( "global.uIDCounter", ( tm.uIDCounter = config.getInt( "global.uIDCounter", tm.uIDCounter ) ) );
 	}
 
 	/************************************************************************************************/

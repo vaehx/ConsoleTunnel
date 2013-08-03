@@ -51,14 +51,7 @@ public class TunnelManager extends ArrayList<Tunnel>
 		boolean open = ( executor != null && target != null );
 
 		Tunnel t = new Tunnel( pluginHandle, uIDCounter, open, runas );
-
-		t.executorName = executorName;
-		if( executor != null )
-			t.executor = executor;
-
-		t.targetName = targetName;
-		if( target != null )
-			t.target = target;
+		t.create( executor, executorName, target, targetName );
 
 		this.add( t );
 		uIDCounter++;
@@ -68,6 +61,8 @@ public class TunnelManager extends ArrayList<Tunnel>
 			pluginHandle.getMConfiguration().set( "global.uIDCounter", uIDCounter);
 			pluginHandle.getMConfiguration().save();
 		}
+		else
+			MLog.e( "Cannot save new tunnel to conf: Plugin Handle not initialized" );
 
 		return MResult.RES_SUCCESS;
 	}
@@ -122,7 +117,7 @@ public class TunnelManager extends ArrayList<Tunnel>
 
 	public List<Tunnel> getTunnelsByTarget( CommandSender cs )
 	{
-		List<Tunnel> res = new ArrayList<Tunnel>();
+		List<Tunnel> res = new ArrayList<>();
 		for( Tunnel t1 : this )
 			if( t1.isTarget( cs ) )
 				res.add( t1 );
@@ -136,7 +131,7 @@ public class TunnelManager extends ArrayList<Tunnel>
 	 */
 	public List<Tunnel> getTunnelsByTarget( String username )
 	{
-		List<Tunnel> res = new ArrayList<Tunnel>();
+		List<Tunnel> res = new ArrayList<>();
 		for( Tunnel t1 : this )
 		{
 			if( t1.isTargetName( username ) )
@@ -147,7 +142,7 @@ public class TunnelManager extends ArrayList<Tunnel>
 
 	public List<Tunnel> getTunnelsBySender( CommandSender cs )
 	{
-		List<Tunnel> res = new ArrayList<Tunnel>();
+		List<Tunnel> res = new ArrayList<>();
 		for( Tunnel t1 : this )
 		{
 			if( t1.isExecutor( cs ) )
@@ -158,7 +153,7 @@ public class TunnelManager extends ArrayList<Tunnel>
 
 	public List<Tunnel> getTunnelsBySender( String username )
 	{
-		List<Tunnel> res = new ArrayList<Tunnel>();
+		List<Tunnel> res = new ArrayList<>();
 		for( Tunnel t1 : this )
 		{
 			if( t1.isExecutor( username ) )
@@ -211,6 +206,8 @@ public class TunnelManager extends ArrayList<Tunnel>
 			int count = 0;
 			for( String s1 : keys )
 			{
+
+				if( s1.equals( "global" ) ) continue;
 
 				MLog.d( "Loading tunnel " + s1 );
 
