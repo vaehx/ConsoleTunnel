@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Clear Tunnels Command
  */
 package com.prosicraft.consoletunnel.commands;
 
@@ -17,43 +16,56 @@ import org.bukkit.entity.Player;
  *
  * @author passi
  */
-public class clearCommand extends extendedCommand {        
-    
-    public clearCommand (ConsoleTunnel handle, String[] args) {
-        super (handle, args);
-    }
-   
-    public commandResult run(Player p, MConfiguration config, TunnelManager tm) {
-        
-        try {
-            
-            // Todo: implement Permissions!
-            
-            // /tunnel clear
-            if ( this.hasArgs(1) && this.getArg(0).equalsIgnoreCase("clear") ) {
-                
-                this.ev ( p );
-                               
-                if ( tm == null || tm.isEmpty() )
-                    return err (p, "There are no tunnels yet.");
-                
-                int n = 0;                
-                
-                for ( Tunnel t : tm ) { t.clear(); n++; }
-                
-                config.save();                
-                tm.clear();                                                                
-                config.load();                
-                
-                return suc (p, "Cleared " + n + " tunnels successfully.");                    
-                
-            } else return skip ();
-            
-        } catch (Exception ex) {            
-            MLog.e("(ClearCmd) " + ex.getMessage());
-            ex.printStackTrace();
-            return err(p, "Failed to execute command.");
-        }
-        
-    }        
+public class clearCommand extends extendedCommand
+{
+
+	public clearCommand( ConsoleTunnel handle, String[] args )
+	{
+		super( handle, args );
+	}
+
+	public commandResult run( Player p, MConfiguration config, TunnelManager tm )
+	{
+
+		try
+		{
+
+			// Todo: implement Permissions!
+
+			// /tunnel clear
+			if( this.hasArgs( 1 ) && this.getArg( 0 ).equalsIgnoreCase( "clear" ) )
+			{
+
+				this.ev( p );
+
+				if( tm == null || tm.isEmpty() )
+					return err( p, "There are no tunnels yet." );
+
+				int n = 0;
+
+				for( Tunnel t : tm )
+				{
+					t.delete();
+					n++;
+				}
+
+				config.save();
+				tm.clear();
+				config.load();
+
+				return suc( p, "Cleared " + n + " tunnels successfully." );
+
+			}
+			else
+				return skip();
+
+		}
+		catch( Exception ex )
+		{
+			MLog.e( "(ClearCmd) " + ex.getMessage() );
+			ex.printStackTrace( System.out );
+			return err( p, "Failed to execute command." );
+		}
+
+	}
 }

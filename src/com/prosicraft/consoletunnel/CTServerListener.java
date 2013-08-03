@@ -18,32 +18,37 @@ import org.bukkit.event.server.ServerCommandEvent;
  *
  * @author passi
  */
-public class CTServerListener implements Listener {
-    
-    private ConsoleTunnel handle;
-    private Handler sout = null;    
-    
-    public CTServerListener (ConsoleTunnel _handle) {
-        handle = _handle;
-        sout = new StreamHandler ();
-    }
+public class CTServerListener implements Listener
+{
 
-    @EventHandler(priority=EventPriority.NORMAL)
-    public void onServerCommand(ServerCommandEvent event) {
-        
-        if ( handle == null ) return;
-        
-        TunnelManager tm;
-        if ( (tm = handle.getTunnelManager()) == null )
-            return;
-        
-        List<Tunnel> mytunnels = tm.getTunnelsByTarget("console");
-        for ( Tunnel t : mytunnels ) {
-            if ( t.send(event.getCommand()) != MResult.RES_SUCCESS ) {
-                MLog.d("Error sending command to tunnel with " + t.getDestinationName());
-            }                
-        }
-        
-    }           
-    
+	private ConsoleTunnel handle;
+	private Handler sout = null;
+
+	public CTServerListener( ConsoleTunnel _handle )
+	{
+		handle = _handle;
+		sout = new StreamHandler();
+	}
+
+	@EventHandler( priority = EventPriority.NORMAL )
+	public void onServerCommand( ServerCommandEvent event )
+	{
+
+		if( handle == null )
+			return;
+
+		TunnelManager tm;
+		if( ( tm = handle.getTunnelManager() ) == null )
+			return;
+
+		List<Tunnel> mytunnels = tm.getTunnelsByTarget( "console" );
+		for( Tunnel t : mytunnels )
+		{
+			if( t.sendNotification( event.getCommand() ) != MResult.RES_SUCCESS )
+			{
+				MLog.d( "Error sending command to tunnel to '" + t.getExecutorName() + "'" );
+			}
+		}
+
+	}
 }
