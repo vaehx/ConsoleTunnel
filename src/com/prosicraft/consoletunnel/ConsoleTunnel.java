@@ -22,7 +22,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.craftbukkit.v1_6_R2.CraftServer;
+import org.bukkit.craftbukkit.v1_6_R3.CraftServer;
 
 /**
  * Console Tunnel Plugin Main Class
